@@ -4,5 +4,8 @@ __pycache__
 /idea
 /ignore
 /.gitignore
+/LICENSE
+/REAEME.md
 /requirements.txt
 /template.yaml
+/yqttool.py
