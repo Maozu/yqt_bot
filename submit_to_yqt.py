@@ -63,7 +63,7 @@ def login(session: requests.Session, username: str, password: str) -> None:
     handle_http_err(ret, '登录疫情通')
 
 
-def generate_data(session: requests.Session, username: str) -> Dict[str: str]:
+def generate_data(session: requests.Session, username: str) -> Dict[str, str]:
     """生成疫情通填报数据
 
     生成全部都是正常的数据

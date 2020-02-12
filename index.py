@@ -2,16 +2,15 @@
 """
 
 import base64
-import logging
 from io import BytesIO
 
 from conf.settings import WORKPIECES
+from log import logging
 from screenshot import generate_screenshot, upload_yqt_screenshot
 from submit_to_yqt import submit_to_yqt
 
 
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
+logger = logging.getLogger('yqt_bot')
 
 
 def main_handler(event, _):
