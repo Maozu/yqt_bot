@@ -10,7 +10,7 @@ import time
 import requests
 
 from conf.settings import WORKPIECES
-from generate_screenshot import generate_screenshot
+from screenshot import generate_screenshot, upload_yqt_screenshot
 from submit_to_yqt import submit_to_yqt
 
 
@@ -31,33 +31,10 @@ def main_handler(event, _):
 
             # 上传图片
             elif event.get('TriggerName') == 'upload' and 'upload' in item[4]:
-                # 06:00:00 - 08:59:59 中的一个随机数
-                shot_time = (random.randint(6, 8), random.randint(0, 59), random.randint(0, 59))
-
-                # 生成截图
-                screenshot_name = f'Screenshot_{time.strftime("%Y%m%d")}_{"%02d%02d%02d" % shot_time}_com.tencent.mm.png'
-                screenshot = generate_screenshot(item[0], item[2], shot_time=('%02d:%02d' % shot_time[:2]))
-                screenshot_fp = io.BytesIO()
-                screenshot.save(screenshot_fp, format='png')
-                screenshot.close()
-
-                ret = requests.post(
-                    UPLOAD_URL,
-                    data={'name': item[0], 'dorm': item[1]},
-                    files={'photo': (screenshot_name, screenshot_fp.getvalue(), 'image/png')}
-                )
-
                 try:
-                    ret_data = json.loads(ret.text)
-                    if not isinstance(ret_data, dict):
-                        ret_data = {}
-                except json.JSONDecodeError:
-                    ret_data = {}
-
-                if ret.status_code == 200 and ret_data.get('code') == 0:
-                    logger.info(f'{item[0]} 上传成功')
-                else:
-                    logger.warning(f'{item[0]} 上传失败，请手动上传')
+                    upload_yqt_screenshot(name=item[0], stu_id=item[2], dorm=item[1])
+                except RuntimeError as e:
+                    logger.warning(f'截图上传失败，已忽略，请手动上传，错误信息：{e}')
 
         return None
 
