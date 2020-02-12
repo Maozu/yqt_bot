@@ -10,7 +10,8 @@ from screenshot import generate_screenshot, upload_yqt_screenshot
 from submit_to_yqt import submit_to_yqt
 
 
-logger = logging.getLogger('upload_yqt_screenshot')
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 
 def main_handler(event, _):
