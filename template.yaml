@@ -22,7 +22,7 @@ Resources:
               Enable: true
               ServiceId: 'service-ox03gtca'
               StageName: 'release'
-              HttpMethod: 'ANY'
+              HttpMethod: 'GET'
               IntegratedResponse: true
           submit_to_yqt:
             Type: 'Timer'
