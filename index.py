@@ -21,22 +21,41 @@ UPLOAD_URL = 'http://yqt.zhengsj.top/photo/'
 
 def main_handler(event, _):
 
-    # 定时触发
-    if event.get('Type') == 'Timer':
+    # 定时触发，填报疫情通
+    if event.get('Type') == 'Timer' and event.get('TriggerName') == 'submit_to_yqt':
+        # [总数, 成功数]
+        count = [0, 0]
+
         for item in WORKPIECES:
-
-            # 提交疫情通
-            if event.get('TriggerName') == 'submit' and 'submit' in item[4]:
-                submit_to_yqt(item[2], item[3])
-
-            # 上传图片
-            elif event.get('TriggerName') == 'upload' and 'upload' in item[4]:
+            if 'submit_to_yqt' in item['actions']:
                 try:
-                    upload_yqt_screenshot(name=item[0], stu_id=item[2], dorm=item[1])
-                except RuntimeError as e:
-                    logger.warning(f'截图上传失败，已忽略，请手动上传，错误信息：{e}')
+                    count[0] += 1
+                    submit_to_yqt(item['stu_id'], item['passwd'])
+                    count[1] += 1
+                except Exception as e:
+                    logger.warning(f'{item["name"]} 填报疫情通失败，已忽略，请手动填报。错误信息：{e}')
 
-        return None
+        summary_msg = f'填报疫情通完成（{count[1]}/{count[0]}）'
+        logger.info(summary_msg)
+        return summary_msg
+
+    # 定时触发，上传截图
+    elif event.get('Type') == 'Timer' and event.get('TriggerName') == 'upload_screenshot':
+        # [总数, 成功数]
+        count = [0, 0]
+
+        for item in WORKPIECES:
+            if 'upload_screenshot' in item['actions']:
+                try:
+                    count[0] += 1
+                    upload_yqt_screenshot(name=item['name'], stu_id=item['stu_id'], dorm=item['dorm'])
+                    count[1] += 1
+                except Exception as e:
+                    logger.warning(f'{item["name"]} 截图上传失败，已忽略，请手动上传，错误信息：{e}')
+
+        summary_msg = f'上传截图完成（{count[1]}/{count[0]}）'
+        logger.info(summary_msg)
+        return summary_msg
 
     # API 网关触发，生成图片或发送定位页
     elif 'queryString' in event:
