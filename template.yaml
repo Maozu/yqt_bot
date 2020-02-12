@@ -7,19 +7,30 @@ Resources:
       Type: 'TencentCloud::Serverless::Function'
       Properties:
         Type: 'Event'
+        Handler: 'index.main_handler'
         Runtime: 'Python3.6'
         CodeUri: './'
         Role: 'SCF_QcsRole'
         Timeout: 30
         MemorySize: 128
-        Handler: 'index.main_handler'
         Description: '疫情通填报、截图生成、截图上传机器人'
+
         Events:
-          dev_helloworld_apigw:
+          yqt_bot_apigw:
             Type: 'APIGW'
             Properties:
               Enable: true
-              ServiceId: 'service-m314dlr8'
-              StageName: 'test'
+              ServiceId: 'service-ox03gtca'
+              StageName: 'release'
               HttpMethod: 'ANY'
-              IntegratedResponse: false
+              IntegratedResponse: true
+          submit_to_yqt:
+            Type: 'Timer'
+            Properties:
+              Enable: true
+              CronExpression: '0 2 9 * * * *'
+          upload_screenshot:
+            Type: 'Timer'
+            Properties:
+              Enable: true
+              CronExpression: '0 5 9 * * * *'
