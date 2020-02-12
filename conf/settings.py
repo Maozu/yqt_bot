@@ -26,4 +26,7 @@ YQT_SCREENSHOT_UPLOAD_URL = 'http://yqt.zhengsj.top/photo/'
 
 
 # 引入真正的工件
-from .secrets import WORKPIECES
+try:
+    from .secrets import WORKPIECES
+except ImportError:
+    pass
