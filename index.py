@@ -1,13 +1,9 @@
 """SCF 函数的入口
 """
-import base64
-import io
-import json
-import logging
-import random
-import time
 
-import requests
+import base64
+import logging
+from io import BytesIO
 
 from conf.settings import WORKPIECES
 from screenshot import generate_screenshot, upload_yqt_screenshot
@@ -15,8 +11,6 @@ from submit_to_yqt import submit_to_yqt
 
 
 logger = logging.getLogger('upload_yqt_screenshot')
-
-UPLOAD_URL = 'http://yqt.zhengsj.top/photo/'
 
 
 def main_handler(event, _):
@@ -57,26 +51,27 @@ def main_handler(event, _):
         logger.info(summary_msg)
         return summary_msg
 
-    # API 网关触发，生成图片或发送定位页
-    elif 'queryString' in event:
+    # API 网关触发，发送定位页
+    elif 'queryString' in event and 'gps' in event['queryString']:
+        with open('get_geo_api_info.html', 'rt', encoding='utf-8') as fp:
+            gps_page = fp.read()
+        return {
+            'body': gps_page,
+            'statusCode': 200,
+            'headers': {'Content-Type': 'text/html'},
+            'isBase64Encoded': False
+        }
 
-        if 'gps' in event['queryString']:
-            with open('get_geo_api_info.html', 'rt', encoding='utf-8') as fp:
-                gps_page = fp.read()
-            return {
-                'body': gps_page,
-                'statusCode': 200,
-                'headers': {'Content-Type': 'text/html'},
-                'isBase64Encoded': False
-            }
+    # API 网关触发，生成疫情通截图
+    elif 'queryString' in event:
 
         name = event['queryString'].get('name')
         stu_id = event['queryString'].get('stu_id')
         if not name or not stu_id:
             return {
-                'body': '"请求参数 `name` 和 `stu_id` 必须提供"',
+                'body': '请求参数 `name` 和 `stu_id` 必须提供',
                 'statusCode': 400,
-                'headers': {},
+                'headers': {'Content-Type': 'text/plain'},
                 'isBase64Encoded': False
             }
 
@@ -94,9 +89,9 @@ def main_handler(event, _):
             battery = None
 
         img = generate_screenshot(name, stu_id, date, shot_time, battery)
-        fp = io.BytesIO()
-        img.save(fp, format='PNG')
-        img.show()
+        fp = BytesIO()
+        img.save(fp, format='png')
+        img.close()
 
         return {
             'body': base64.standard_b64encode(fp.getvalue()).decode(),

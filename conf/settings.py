@@ -13,6 +13,17 @@ WORKPIECES = [
 ]
 
 
+# 疫情通系统的 url
+YQT_URLS = {
+    'base': 'https://xxcapp.xidian.edu.cn',
+    'login': '/uc/wap/login/check',
+    'yqt': '/ncov/wap/default/index',
+    'submit': '/ncov/wap/default/save'
+}
+
+# 上传疫情通截图的 url
 YQT_SCREENSHOT_UPLOAD_URL = 'http://yqt.zhengsj.top/photo/'
 
+
+# 引入真正的工件
 from .secrets import WORKPIECES

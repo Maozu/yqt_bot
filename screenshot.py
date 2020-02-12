@@ -84,6 +84,7 @@ def upload_yqt_screenshot(
     :param stu_id: 学号
     :param dorm: 寝室号
     :param shot_time: 截图时间，缺省值是今天 06:00:00 - 08:59:59 的一个随机数
+    :return: None
     """
 
     logger.info(f'准备上传 {name} 的截图')
