@@ -26,6 +26,12 @@ def main_handler(event, _):
                     count[0] += 1
                     submit_to_yqt(item['stu_id'], item['passwd'])
                     count[1] += 1
+                except ValueError as e:
+                    if str(e) == '今天已经填报疫情通，不能重复填报':
+                        logger.warning(f'{item["name"]} 今天已经填报疫情通，已忽略')
+                        count[1] += 1
+                    else:
+                        raise e
                 except Exception as e:
                     logger.warning(f'{item["name"]} 填报疫情通失败，已忽略，请手动填报。错误信息：{e}')
 

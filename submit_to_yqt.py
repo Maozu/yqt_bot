@@ -81,6 +81,13 @@ def generate_data(session: requests.Session, username: str) -> Dict[str, str]:
         logger.error(err_msg)
         raise RuntimeError(err_msg)
 
+    # 正则查找 hasFlag
+    has_flag = re.search(r"hasFlag: '1',", ret.text)
+    if has_flag:
+        err_msg = '今天已经填报疫情通，不能重复填报'
+        logger.warning(err_msg)
+        raise ValueError(err_msg)
+
     # 正则查找 uid 和 id 字段的值
     init_data = re.search(r'var def = (.+?)"uid":"([^"]+?)"(.+?)"id":([^"]+?),(.+?);\s*?var vm = new Vue', ret.text)
     if not init_data:

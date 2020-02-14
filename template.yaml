@@ -28,7 +28,7 @@ Resources:
             Type: 'Timer'
             Properties:
               Enable: true
-              CronExpression: '0 2 9 * * * *'
+              CronExpression: '0 */20 8,9 * * * *'
           upload_screenshot:
             Type: 'Timer'
             Properties:
