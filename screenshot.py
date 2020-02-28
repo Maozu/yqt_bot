@@ -53,10 +53,10 @@ def generate_screenshot(
     dw = ImageDraw.Draw(template_img)
 
     # 添加日期、姓名、学号
-    form_font = ImageFont.truetype('./assets/msyh.ttc', 56)
-    dw.text((112, 1159), date, fill=(20, 20, 20), font=form_font)
-    dw.text((112, 1564), name, fill=(20, 20, 20), font=form_font)
-    dw.text((112, 1979), stu_id, fill=(20, 20, 20), font=form_font)
+    form_font = ImageFont.truetype('./assets/msyh.ttc', 43)
+    dw.text((92, 1279), date, fill=(20, 20, 20), font=form_font)
+    dw.text((92, 1604), name, fill=(20, 20, 20), font=form_font)
+    dw.text((92, 1939), stu_id, fill=(20, 20, 20), font=form_font)
 
     # 添加电池电量、时间
     dw.text((1187, 29), str(battery), fill=(102, 102, 102), font=ImageFont.truetype('./assets/msyh.ttc', 31))
@@ -64,7 +64,7 @@ def generate_screenshot(
 
     # 添加提交成功弹窗
     alert_img = Image.open('./assets/alert.png')
-    template_img.paste(alert_img, (260, 1369))
+    template_img.paste(alert_img, (260, 1460))
     alert_img.close()
 
     logger.info('截图生成完成.')
