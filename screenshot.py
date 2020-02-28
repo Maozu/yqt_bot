@@ -4,8 +4,8 @@
 import datetime
 import json
 import logging
+import pytz
 import random
-import time
 from io import BytesIO
 
 import requests
@@ -34,13 +34,15 @@ def generate_screenshot(
     :return: 生成的图片
     """
 
+    now_datetime = datetime.datetime.now(tz=pytz.timezone(settings.TIMEZONE))
+
     # 日期缺省值
     if date is None:
-        date = time.strftime('%Y-%m-%d')
+        date = now_datetime.strftime('%Y-%m-%d')
 
     # 时间缺省值
     if shot_time is None:
-        shot_time = time.strftime('%H:%M')
+        shot_time = now_datetime.strftime('%H:%M')
 
     # 电量缺省值是 10-99 的随机整数
     if battery is None:
@@ -91,7 +93,7 @@ def upload_yqt_screenshot(
 
     # 截图时间缺省值是今天 06:00:00 - 08:59:59 中的一个随机数
     if shot_time is None:
-        shot_time = datetime.datetime.now()
+        shot_time = datetime.datetime.now(tz=pytz.timezone(settings.TIMEZONE))
         shot_time = shot_time.replace(
             hour=random.randint(6, 8),
             minute=random.randint(0, 59),

@@ -1,15 +1,17 @@
 """与填报疫情通相关的方法
 """
 
+import datetime
 import json
 import logging
+import pytz
 import re
 import time
 from typing import Dict
 
 import requests
 
-from conf.settings import YQT_URLS
+from conf.settings import YQT_URLS, TIMEZONE
 
 
 logger = logging.getLogger('submit_to_yqt')
@@ -105,7 +107,7 @@ def generate_data(session: requests.Session, username: str) -> Dict[str, str]:
     # 生成填报数据
     data = {
         'uid': uid,
-        'date': time.strftime('%Y%m%d'),
+        'date': datetime.datetime.now(tz=pytz.timezone(TIMEZONE)).strftime('%Y%m%d'),
         'tw': '1',
         'sfcxtz': '0',
         'sfyyjc': '0',

@@ -25,6 +25,10 @@ YQT_URLS = {
 YQT_SCREENSHOT_UPLOAD_URL = 'http://yqt.zhengsj.top/photo/'
 
 
+# 时区
+TIMEZONE = 'Asia/Shanghai'
+
+
 # 引入真正的工件
 try:
     from .secrets import WORKPIECES
