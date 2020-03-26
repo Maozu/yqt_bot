@@ -91,7 +91,7 @@ def generate_data(session: requests.Session, username: str) -> Dict[str, str]:
         raise ValueError(err_msg)
 
     # 正则查找 uid 和 id 字段的值
-    init_data = re.search(r'var def = (.+?)"uid":"([^"]+?)"(.+?)"id":([^"]+?),(.+?);\s*?var vm = new Vue', ret.text)
+    init_data = re.search(r'var def = (.+?)"uid":"([^"]+?)"(.+?)"id":([^"]+?),(.+?);\n', ret.text)
     if not init_data:
         err_msg = '疫情通页面结构不符合预期'
         logger.error(err_msg)
@@ -139,7 +139,6 @@ def generate_data(session: requests.Session, username: str) -> Dict[str, str]:
         'fxyy': '',
         'bztcyy': '',
         'fjsj': '0',
-        'created_uid': '0',
         'sfjchbry': '0',
         'sfjcqz': '',
         'jcqzrq': '',
@@ -148,6 +147,13 @@ def generate_data(session: requests.Session, username: str) -> Dict[str, str]:
         'xjzd': '',
         'szgj': '',
         'sfsfbh': '0',
+        'szsqsfybl': '0',
+        'sfsqhzjkk': '',
+        'sqhzjkkys': '',
+        'sfygtjzzfj': '0',
+        'gtjzzfjsj': '',
+        'sfjcjwry': '0',
+        'created_uid': '0',
         'id': its_id,
         'gwszdd': '',
         'sfyqjzgc': '',
